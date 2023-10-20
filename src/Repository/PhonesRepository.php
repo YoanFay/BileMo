@@ -18,11 +18,14 @@ class PhonesRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
+
         parent::__construct($registry, Phones::class);
     }
 
+
     public function add(Phones $entity, bool $flush = false): void
     {
+
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
@@ -30,13 +33,26 @@ class PhonesRepository extends ServiceEntityRepository
         }
     }
 
+
     public function remove(Phones $entity, bool $flush = false): void
     {
+
         $this->getEntityManager()->remove($entity);
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+
+    public function findAllWithPagination($page, $limit)
+    {
+
+        return $this->createQueryBuilder('b')
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**
