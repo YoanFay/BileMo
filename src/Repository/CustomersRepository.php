@@ -42,6 +42,17 @@ class CustomersRepository extends ServiceEntityRepository implements PasswordUpg
         }
     }
 
+
+    public function findAllWithPagination($page, $limit)
+    {
+
+        return $this->createQueryBuilder('b')
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
