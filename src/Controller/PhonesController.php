@@ -33,8 +33,8 @@ class PhonesController extends AbstractController
         $limit = $request->get('limit', 20);
 
         $phoneList = $phonesRepository->findAllWithPagination($page, $limit);
-        $jsonBookList = $serializer->serialize($phoneList, 'json', ['getPhones']);
-        return new JsonResponse($jsonBookList, Response::HTTP_OK, [], true);
+        $jsonPhoneList = $serializer->serialize($phoneList, 'json', ['getPhones']);
+        return new JsonResponse($jsonPhoneList, Response::HTTP_OK, [], true);
     }
 
 
@@ -44,8 +44,8 @@ class PhonesController extends AbstractController
     public function getDetailPhone(Phones $phones, SerializerInterface $serializer): JsonResponse
     {
 
-        $jsonBook = $serializer->serialize($phones, 'json', ['getPhones']);
-        return new JsonResponse($jsonBook, Response::HTTP_OK, [], true);
+        $jsonPhone = $serializer->serialize($phones, 'json', ['getPhones']);
+        return new JsonResponse($jsonPhone, Response::HTTP_OK, [], true);
     }
 
 /*
@@ -66,10 +66,10 @@ class PhonesController extends AbstractController
         $em->persist($phone);
         $em->flush();
 
-        $jsonBook = $serializer->serialize($phone, 'json', ['getPhones']);
+        $jsonPhone = $serializer->serialize($phone, 'json', ['getPhones']);
         $location = $urlGenerator->generate('detailPhone', ['id' => $phone->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        return new JsonResponse($jsonBook, Response::HTTP_CREATED, ["Location" => $location], true);
+        return new JsonResponse($jsonPhone, Response::HTTP_CREATED, ["Location" => $location], true);
     }
 
     /**
