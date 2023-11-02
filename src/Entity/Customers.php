@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CustomersRepository::class)
@@ -18,32 +19,44 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("getCustomers", "getUsers")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups("getCustomers", "getUsers")
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups("getCustomers", "getUsers")
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Groups("getCustomers", "getUsers")
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=50)
+     * @Groups("getCustomers", "getUsers")
      */
-    private $name;
+    private $firstname;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     * @Groups("getCustomers", "getUsers")
+     */
+    private $lastname;
 
     /**
      * @ORM\OneToMany(targetEntity=Users::class, mappedBy="customer")
+     * @Groups("getCustomers")
      */
     private $users;
 
@@ -141,14 +154,26 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getName(): ?string
+    public function getFirstname(): ?string
     {
-        return $this->name;
+        return $this->firstname;
     }
 
-    public function setName(string $name): self
+    public function setFirstname(string $firstname): self
     {
-        $this->name = $name;
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(string $lastname): self
+    {
+        $this->lastname = $lastname;
 
         return $this;
     }
