@@ -14,26 +14,31 @@ class Phones
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("getPhones")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=90)
+     * @Groups("getPhones")
      */
     private $model;
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Groups("getPhones")
      */
     private $brand;
 
     /**
      * @ORM\Column(type="string", length=25)
+     * @Groups("getPhones")
      */
     private $color;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("getPhones")
      */
     private $price;
 

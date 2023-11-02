@@ -46,7 +46,7 @@ class CustomersRepository extends ServiceEntityRepository implements PasswordUpg
     public function findAllWithPagination($page, $limit)
     {
 
-        return $this->createQueryBuilder('b')
+        return $this->createQueryBuilder('c')
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit)
             ->getQuery()

@@ -42,18 +42,15 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
         }
     }
 
-    /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     */
-    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
+
+    public function findAllWithPagination($page, $limit)
     {
-        if (!$user instanceof Users) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
-        }
 
-        $user->setPassword($newHashedPassword);
-
-        $this->add($user, true);
+        return $this->createQueryBuilder('u')
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**

@@ -36,7 +36,7 @@ class CustomersController extends AbstractController
         $limit = $request->get('limit', 20);
 
         $customerList = $customersRepository->findAllWithPagination($page, $limit);
-        $jsonCustomerList = $serializer->serialize($customerList, 'json', ['getCustomers']);
+        $jsonCustomerList = $serializer->serialize($customerList, 'json', ["groups" => "getCustomers"]);
         return new JsonResponse($jsonCustomerList, Response::HTTP_OK, [], true);
     }
 
@@ -47,7 +47,7 @@ class CustomersController extends AbstractController
     public function getDetailCustomer(Customers $customers, SerializerInterface $serializer): JsonResponse
     {
 
-        $jsonCustomer = $serializer->serialize($customers, 'json', ['getCustomers']);
+        $jsonCustomer = $serializer->serialize($customers, 'json', ["groups" => "getCustomers"]);
         return new JsonResponse($jsonCustomer, Response::HTTP_OK, [], true);
     }
 
@@ -71,7 +71,7 @@ class CustomersController extends AbstractController
         $em->persist($customer);
         $em->flush();
 
-        $jsonCustomer = $serializer->serialize($customer, 'json', ['getCustomers']);
+        $jsonCustomer = $serializer->serialize($customer, 'json', ["groups" => "getCustomers"]);
         $location = $urlGenerator->generate('detailCustomer', ['id' => $customer->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return new JsonResponse($jsonCustomer, Response::HTTP_CREATED, ["Location" => $location], true);

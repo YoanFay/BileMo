@@ -4,51 +4,91 @@ namespace App\Entity;
 
 use App\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
  */
-class Users implements UserInterface, PasswordAuthenticatedUserInterface
+class Users
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("getUsers", "getCustomers")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=50)
+     * @Groups("getUsers", "getCustomers")
+     */
+    private $firstname;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     * @Groups("getUsers", "getCustomers")
+     */
+    private $lastname;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     * @Groups("getUsers", "getCustomers")
      */
     private $email;
 
     /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
-
-    /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
-     */
-    private $password;
-
-    /**
      * @ORM\Column(type="string", length=100)
+     * @Groups("getUsers", "getCustomers")
      */
-    private $name;
+    private $address;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     * @Groups("getUsers", "getCustomers")
+     */
+    private $city;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups("getUsers", "getCustomers")
+     */
+    private $zipcode;
 
     /**
      * @ORM\ManyToOne(targetEntity=Customers::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("getUsers")
      */
     private $customer;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(string $lastname): self
+    {
+        $this->lastname = $lastname;
+
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -63,86 +103,38 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUserIdentifier(): string
+    public function getAddress(): ?string
     {
-        return (string) $this->email;
+        return $this->address;
     }
 
-    /**
-     * @deprecated since Symfony 5.3, use getUserIdentifier instead
-     */
-    public function getUsername(): string
+    public function setAddress(string $address): self
     {
-        return (string) $this->email;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
+        $this->address = $address;
 
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
-    public function getPassword(): string
+    public function getCity(): ?string
     {
-        return $this->password;
+        return $this->city;
     }
 
-    public function setPassword(string $password): self
+    public function setCity(string $city): self
     {
-        $this->password = $password;
+        $this->city = $city;
 
         return $this;
     }
 
-    /**
-     * Returning a salt is only needed, if you are not using a modern
-     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
-     *
-     * @see UserInterface
-     */
-    public function getSalt(): ?string
+    public function getZipcode(): ?int
     {
-        return null;
+        return $this->zipcode;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials()
+    public function setZipcode(int $zipcode): self
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+        $this->zipcode = $zipcode;
 
         return $this;
     }
