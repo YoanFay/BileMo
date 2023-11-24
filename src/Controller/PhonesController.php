@@ -14,12 +14,44 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Annotations as OA;
 
 class PhonesController extends AbstractController
 {
 
 
-    /**
+    /** Cette méthode permet de récupérer l'ensemble des téléphones.
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Retourne la liste des téléphones",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Phones::class, groups={"getPhones"}))
+     *     )
+     * )
+     * @OA\Parameter(
+     *     name="page",
+     *     in="query",
+     *     description="La page que l'on veut récupérer",
+     *     @OA\Schema(type="int")
+     * )
+     *
+     * @OA\Parameter(
+     *     name="limit",
+     *     in="query",
+     *     description="Le nombre d'éléments que l'on veut récupérer",
+     *     @OA\Schema(type="int")
+     * )
+     * @OA\Tag(name="Phones")
+     *
+     * @param PhonesRepository $phonesRepository
+     * @param SerializerInterface $serializer
+     * @param Request $request
+     * @return JsonResponse
+     *
      * @Route("/api/phones", name="phones", methods="GET")
      */
     public function getPhonesList(
@@ -37,8 +69,32 @@ class PhonesController extends AbstractController
         return new JsonResponse($jsonPhoneList, Response::HTTP_OK, [], true);
     }
 
+    /** Cette méthode permet de récupérer les détails d'un téléphone.
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Retourne les détails d'un téléphone",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Phones::class, groups={"getPhones"}))
+     *     )
+     * )
+     *
+     * @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     required=true,
+     *     description="L'ID du téléphone que l'on veut récupérer",
+     *     @OA\Schema(type="string")
+     * )
+     *
+     * @OA\Tag(name="Phones")
 
-    /**
+     * @param Phones              $phones
+     * @param SerializerInterface $serializer
+     *
+     * @return JsonResponse
+     *
      * @Route("/api/phones/{id}", name="detailPhone", methods="GET")
      */
     public function getDetailPhone(Phones $phones, SerializerInterface $serializer): JsonResponse
@@ -48,58 +104,4 @@ class PhonesController extends AbstractController
         return new JsonResponse($jsonPhone, Response::HTTP_OK, [], true);
     }
 
-/*
-    /**
-     * @Route("/api/phones", name="createPhone", methods="POST")
-     */
-    /*public function createPhone(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator, ValidatorInterface $validator): JsonResponse
-    {
-
-        $phone = $serializer->deserialize($request->getContent(), Phones::class, 'json');
-
-        $errors = $validator->validate($phone);
-
-        if ($errors->count() > 0) {
-            return new JsonResponse($serializer->serialize($errors, 'json'), JsonResponse::HTTP_BAD_REQUEST, [], true);
-        }
-
-        $em->persist($phone);
-        $em->flush();
-
-        $jsonPhone = $serializer->serialize($phone, 'json', ['getPhones']);
-        $location = $urlGenerator->generate('detailPhone', ['id' => $phone->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
-
-        return new JsonResponse($jsonPhone, Response::HTTP_CREATED, ["Location" => $location], true);
-    }
-
-    /**
-     * @Route("/api/phones/{id}", name="updatePhone", methods="PUT")
-     */
-    /*public function updatePhone(Request $request, SerializerInterface $serializer, Phones $currentPhone, EntityManagerInterface $em): JsonResponse
-    {
-
-        $updatedPhone = $serializer->deserialize(
-            $request->getContent(),
-            Phones::class,
-            'json',
-            [AbstractNormalizer::OBJECT_TO_POPULATE => $currentPhone]
-        );
-
-        $em->persist($updatedPhone);
-        $em->flush();
-        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
-    }
-
-
-    /**
-     * @Route("/api/phones/{id}", name="deletePhone", methods="DELETE")
-     */
-   /* public function deletePhone(Phones $phones, EntityManagerInterface $em): JsonResponse
-    {
-
-        $em->remove($phones);
-        $em->flush();
-
-        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
-    }*/
 }

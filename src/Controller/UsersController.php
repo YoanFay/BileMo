@@ -19,12 +19,45 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Annotations as OA;
 
 class UsersController extends AbstractController
 {
 
 
-    /**
+    /** Cette méthode permet de récupérer l'ensemble des utilisateurs.
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Retourne la liste des utilisateurs",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Users::class, groups={"getUsers"}))
+     *     )
+     * )
+     * @OA\Parameter(
+     *     name="page",
+     *     in="query",
+     *     description="La page que l'on veut récupérer",
+     *     @OA\Schema(type="int")
+     * )
+     *
+     * @OA\Parameter(
+     *     name="limit",
+     *     in="query",
+     *     description="Le nombre d'éléments que l'on veut récupérer",
+     *     @OA\Schema(type="int")
+     * )
+     * @OA\Tag(name="Users")
+     *
+     * @param UsersRepository     $usersRepository
+     * @param SerializerInterface $serializer
+     * @param Request             $request
+     *
+     * @return JsonResponse
+     *
      * @Route("/api/users", name="users", methods="GET")
      */
     public function getUsersList(
@@ -43,7 +76,32 @@ class UsersController extends AbstractController
     }
 
 
-    /**
+    /** Cette méthode permet de récupérer les détails d'un utilisateur.
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Retourne les détails d'un utilisateur",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Users::class, groups={"getUsers"}))
+     *     )
+     * )
+     *
+     * @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     required=true,
+     *     description="L'ID de l'utilisateur que l'on veut récupérer",
+     *     @OA\Schema(type="string")
+     * )
+     *
+     * @OA\Tag(name="Users")
+
+     * @param Users               $users
+     * @param SerializerInterface $serializer
+     *
+     * @return JsonResponse
+     *
      * @Route("/api/users/{id}", name="detailUser", methods="GET")
      */
     public function getDetailUser(Users $users, SerializerInterface $serializer): JsonResponse
@@ -54,11 +112,40 @@ class UsersController extends AbstractController
     }
 
 
-    /**
+    /** Cette méthode permet d'ajouter un utilisateur.
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Ajouter un utilisateur",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Users::class, groups={"getUsers"}))
+     *     )
+     * )
+     *
+     * @OA\RequestBody(
+     *     @Model(type=Users::class),
+     *     description="Description du corps de la requête",
+     *     required=true
+     * )
+     *
+     * @OA\Tag(name="Users")
+     *
+     * @param Request                $request
+     * @param SerializerInterface    $serializer
+     * @param EntityManagerInterface $em
+     * @param UrlGeneratorInterface  $urlGenerator
+     * @param ValidatorInterface     $validator
+     * @param CustomersRepository    $customersRepository
+     *
+     * @return JsonResponse
+     *
      * @Route("/api/users", name="createUser", methods="POST")
      */
     public function createUsers(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator, ValidatorInterface $validator, CustomersRepository $customersRepository): JsonResponse
     {
+
+        dump($request->getContent());
 
         $user = $serializer->deserialize($request->getContent(), Users::class, 'json');
 
@@ -79,7 +166,33 @@ class UsersController extends AbstractController
         return new JsonResponse($jsonUser, Response::HTTP_CREATED, ["Location" => $location], true);
     }
 
-    /**
+
+    /** Cette méthode permet de modifier un utilisateur.
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Modifie un utilisateur",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Users::class, groups={"getUsers"}))
+     *     )
+     * )
+     *
+     * @OA\RequestBody(
+     *     @Model(type=Users::class),
+     *     description="Description du corps de la requête",
+     *     required=true
+     * )
+     *
+     * @OA\Tag(name="Users")
+     *
+     * @param Request                $request
+     * @param SerializerInterface    $serializer
+     * @param Users                  $currentUser
+     * @param EntityManagerInterface $em
+     *
+     * @return JsonResponse
+     *
      * @Route("/api/users/{id}", name="updateUser", methods="PUT")
      */
     public function updateUser(Request $request, SerializerInterface $serializer, Users $currentUser, EntityManagerInterface $em): JsonResponse
@@ -98,7 +211,28 @@ class UsersController extends AbstractController
     }
 
 
-    /**
+    /** Cette méthode permet de supprimer un utilisateur.
+     *
+     * @OA\Response(
+     *     response=204,
+     *     description="Supprime un utilisateur"
+     * )
+     *
+     * @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     required=true,
+     *     description="L'ID de l'utilisateur que l'on veut récupérer",
+     *     @OA\Schema(type="string")
+     * )
+     *
+     * @OA\Tag(name="Users")
+     *
+     * @param Users                  $users
+     * @param EntityManagerInterface $em
+     *
+     * @return JsonResponse
+     *
      * @Route("/api/users/{id}", name="deleteUsers", methods="DELETE")
      */
     public function deleteUser(Users $users, EntityManagerInterface $em): JsonResponse

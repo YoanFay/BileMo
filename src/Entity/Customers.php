@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use OpenApi\Annotations as OA;
 
 /**
  * @UniqueEntity(fields={"email"}, message="L'email {{ value }} est déjà utilisé")
@@ -44,6 +45,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="json")
      * @Groups("getCustomers", "getUsers")
      * @Assert\NotBlank(message = "Les rôles sont obligatoires")
+     * @OA\Property(type="array", @OA\Items(type="string"))
      */
     private $roles = [];
 
