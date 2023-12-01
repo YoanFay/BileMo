@@ -6,6 +6,7 @@ use App\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use OpenApi\Annotations\Property;
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
@@ -30,6 +31,7 @@ class Users
      *      minMessage = "Votre prénom doit comporter au moins {{ limit }} caractères.",
      *      maxMessage = "Votre prénom ne peut pas contenir plus de {{ limit }} caractères."
      * )
+     * @Property(description="Prénom de l'utilisateur")
      */
     private $firstname;
 
@@ -43,6 +45,7 @@ class Users
      *      minMessage = "Votre nom de famille doit comporter au moins {{ limit }} caractères.",
      *      maxMessage = "Votre nom de famille ne peut pas comporter plus de {{ limit }} caractères."
      * )
+     * @Property(description="Nom de l'utilisateur")
      */
     private $lastname;
 
@@ -57,6 +60,7 @@ class Users
      *      minMessage = "Votre e-mail doit contenir au moins {{ limit }} caractères.",
      *      maxMessage = "Votre e-mail ne peut pas comporter plus de {{ limit }} caractères."
      * )
+     * @Property(description="Email de l'utilisateur")
      */
     private $email;
 
@@ -70,6 +74,7 @@ class Users
      *      minMessage = "L'adresse doit contenir au moins {{ limit }} caractères.",
      *      maxMessage = "L'adresse ne peut pas comporter plus de {{ limit }} caractères."
      * )
+     * @Property(description="Adresse de l'utilisateur")
      */
     private $address;
 
@@ -83,6 +88,7 @@ class Users
      *      minMessage = "La ville doit contenir au moins {{ limit }} caractères.",
      *      maxMessage = "La ville ne peut pas comporter plus de {{ limit }} caractères."
      * )
+     * @Property(description="Ville de l'utilisateur")
      */
     private $city;
 
@@ -90,6 +96,7 @@ class Users
      * @ORM\Column(type="integer")
      * @Groups("getUsers", "getCustomers")
      * @Assert\NotBlank(message = "Le code postal est obligatoire")
+     * @Property(description="Code postal de l'utilisateur")
      */
     private $zipcode;
 
@@ -97,6 +104,7 @@ class Users
      * @ORM\ManyToOne(targetEntity=Customers::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
      * @Groups("getUsers")
+     * @Property(description="Client lié à l'utilisateur")
      */
     private $customer;
 

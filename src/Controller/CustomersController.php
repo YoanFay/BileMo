@@ -17,16 +17,49 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Annotations as OA;
 
 class CustomersController extends AbstractController
 {
 
 
-    /**
+    /** Cette méthode permet de récupérer l'ensemble des clients.
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Retourne la liste des clients",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Customers::class, groups={"getCustomers"}))
+     *     )
+     * )
+     * @OA\Parameter(
+     *     name="page",
+     *     in="query",
+     *     description="La page que l'on veut récupérer",
+     *     @OA\Schema(type="int")
+     * )
+     *
+     * @OA\Parameter(
+     *     name="limit",
+     *     in="query",
+     *     description="Le nombre d'éléments que l'on veut récupérer",
+     *     @OA\Schema(type="int")
+     * )
+     * @OA\Tag(name="Customers")
+     *
+     * @param CustomersRepository $customersRepository
+     * @param SerializerInterface $serializer
+     * @param Request             $request
+     *
+     * @return JsonResponse
+     *
      * @Route("/api/customers", name="customers", methods="GET")
      */
     public function getCustomersList(
-        CustomersRepository    $customersRepository,
+        CustomersRepository $customersRepository,
         SerializerInterface $serializer,
         Request             $request
     ): JsonResponse
@@ -41,7 +74,32 @@ class CustomersController extends AbstractController
     }
 
 
-    /**
+    /** Cette méthode permet de récupérer les détails d'un client.
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Retourne les détails d'un client",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=Customers::class, groups={"getCustomers"}))
+     *     )
+     * )
+     *
+     * @OA\Parameter(
+     *     name="id",
+     *     in="path",
+     *     required=true,
+     *     description="L'ID du client que l'on veut récupérer",
+     *     @OA\Schema(type="string")
+     * )
+     *
+     * @OA\Tag(name="Customers")
+     *
+     * @param Customers           $customers
+     * @param SerializerInterface $serializer
+     *
+     * @return JsonResponse
+     *
      * @Route("/api/customers/{id}", name="detailCustomer", methods="GET")
      */
     public function getDetailCustomer(Customers $customers, SerializerInterface $serializer): JsonResponse
@@ -51,60 +109,4 @@ class CustomersController extends AbstractController
         return new JsonResponse($jsonCustomer, Response::HTTP_OK, [], true);
     }
 
-
-        /**
-         * @Route("/api/customers", name="createCustomer", methods="POST")
-         */
-    public function createCustomers(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator, ValidatorInterface $validator, UserPasswordHasherInterface $userPasswordHasher): JsonResponse
-    {
-
-        $customer = $serializer->deserialize($request->getContent(), Customers::class, 'json');
-
-        $errors = $validator->validate($customer);
-
-        if ($errors->count() > 0) {
-            return new JsonResponse($serializer->serialize($errors, 'json'), JsonResponse::HTTP_BAD_REQUEST, [], true);
-        }
-
-        $customer->setPassword($userPasswordHasher->hashPassword($customer, $customer->getPassword()));
-
-        $em->persist($customer);
-        $em->flush();
-
-        $jsonCustomer = $serializer->serialize($customer, 'json', ["groups" => "getCustomers"]);
-        $location = $urlGenerator->generate('detailCustomer', ['id' => $customer->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
-
-        return new JsonResponse($jsonCustomer, Response::HTTP_CREATED, ["Location" => $location], true);
-    }
-
-    /**
-     * @Route("/api/customers/{id}", name="updateCustomer", methods="PUT")
-     */
-    public function updateCustomer(Request $request, SerializerInterface $serializer, Customers $currentCustomer, EntityManagerInterface $em): JsonResponse
-    {
-
-        $updatedCustomer = $serializer->deserialize(
-            $request->getContent(),
-            Customers::class,
-            'json',
-            [AbstractNormalizer::OBJECT_TO_POPULATE => $currentCustomer]
-        );
-
-        $em->persist($updatedCustomer);
-        $em->flush();
-        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
-    }
-
-
-    /**
-     * @Route("/api/customers/{id}", name="deleteCustomers", methods="DELETE")
-     */
-     public function deleteCustomer(Customers $customers, EntityManagerInterface $em): JsonResponse
-     {
-
-         $em->remove($customers);
-         $em->flush();
-
-         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
-     }
 }
