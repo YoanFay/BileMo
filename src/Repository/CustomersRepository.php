@@ -61,27 +61,6 @@ class CustomersRepository extends ServiceEntityRepository implements PasswordUpg
 
 
     /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     *
-     * @param PasswordAuthenticatedUserInterface $user              parameter
-     * @param string                             $newHashedPassword parameter
-     *
-     * @return void
-     */
-    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
-    {
-
-        if (!$user instanceof Customers) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', htmlspecialchars(get_class($user))));
-        }
-
-        $user->setPassword($newHashedPassword);
-
-        $this->add($user, true);
-    }
-
-
-    /**
      * @param Customers $entity parameter
      * @param bool      $flush  parameter
      *
