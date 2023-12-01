@@ -19,13 +19,27 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class UsersRepository extends ServiceEntityRepository
 {
+
+
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
+
         parent::__construct($registry, Users::class);
     }
 
+
+    /**
+     * @param Users $entity parameter
+     * @param bool  $flush  parameter
+     *
+     * @return void
+     */
     public function add(Users $entity, bool $flush = false): void
     {
+
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
@@ -33,8 +47,16 @@ class UsersRepository extends ServiceEntityRepository
         }
     }
 
+
+    /**
+     * @param Users $entity parameter
+     * @param bool  $flush  parameter
+     *
+     * @return void
+     */
     public function remove(Users $entity, bool $flush = false): void
     {
+
         $this->getEntityManager()->remove($entity);
 
         if ($flush) {
@@ -43,7 +65,13 @@ class UsersRepository extends ServiceEntityRepository
     }
 
 
-    public function findAllWithPagination($page, $limit)
+    /**
+     * @param int $page  parameter
+     * @param int $limit parameter
+     *
+     * @return float|int|mixed|string
+     */
+    public function findAllWithPagination(int $page, int $limit): mixed
     {
 
         return $this->createQueryBuilder('u')
@@ -53,28 +81,4 @@ class UsersRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-//    /**
-//     * @return Users[] Returns an array of Users objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Users
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }
