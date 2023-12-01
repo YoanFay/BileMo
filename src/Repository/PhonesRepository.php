@@ -16,13 +16,25 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PhonesRepository extends ServiceEntityRepository
 {
+
+
+    /**
+     * @param ManagerRegistry $registry parameter
+     */
     public function __construct(ManagerRegistry $registry)
     {
 
         parent::__construct($registry, Phones::class);
+
     }
 
 
+    /**
+     * @param Phones $entity parameter
+     * @param bool   $flush  parameter
+     *
+     * @return void
+     */
     public function add(Phones $entity, bool $flush = false): void
     {
 
@@ -34,6 +46,12 @@ class PhonesRepository extends ServiceEntityRepository
     }
 
 
+    /**
+     * @param Phones $entity parameter
+     * @param bool   $flush  parameter
+     *
+     * @return void
+     */
     public function remove(Phones $entity, bool $flush = false): void
     {
 
@@ -45,7 +63,13 @@ class PhonesRepository extends ServiceEntityRepository
     }
 
 
-    public function findAllWithPagination($page, $limit)
+    /**
+     * @param int $page  parameter
+     * @param int $limit parameter
+     *
+     * @return float|int|mixed|string
+     */
+    public function findAllWithPagination(int $page, int $limit)
     {
 
         return $this->createQueryBuilder('p')
@@ -55,28 +79,5 @@ class PhonesRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-//    /**
-//     * @return Phones[] Returns an array of Phones objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
 
-//    public function findOneBySomeField($value): ?Phones
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

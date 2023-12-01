@@ -22,12 +22,13 @@ class UsersRepository extends ServiceEntityRepository
 
 
     /**
-     * @param ManagerRegistry $registry
+     * @param ManagerRegistry $registry parameter
      */
     public function __construct(ManagerRegistry $registry)
     {
 
         parent::__construct($registry, Users::class);
+
     }
 
 
@@ -80,5 +81,6 @@ class UsersRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
 
 }

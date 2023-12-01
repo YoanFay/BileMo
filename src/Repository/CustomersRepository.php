@@ -19,22 +19,22 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class CustomersRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
+
+
+    /**
+     * @param ManagerRegistry $registry parameter
+     */
     public function __construct(ManagerRegistry $registry)
     {
+
         parent::__construct($registry, Customers::class);
+
     }
 
-    public function add(Customers $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
 
     public function remove(Customers $entity, bool $flush = false): void
     {
+
         $this->getEntityManager()->remove($entity);
 
         if ($flush) {
@@ -43,6 +43,12 @@ class CustomersRepository extends ServiceEntityRepository implements PasswordUpg
     }
 
 
+    /**
+     * @param int $page  parameter
+     * @param int $limit parameter
+     *
+     * @return float|int|mixed|string
+     */
     public function findAllWithPagination($page, $limit)
     {
 
@@ -53,13 +59,20 @@ class CustomersRepository extends ServiceEntityRepository implements PasswordUpg
             ->getResult();
     }
 
+
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
+     *
+     * @param PasswordAuthenticatedUserInterface $user              parameter
+     * @param string                             $newHashedPassword parameter
+     *
+     * @return void
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
+
         if (!$user instanceof Customers) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', htmlspecialchars(get_class($user))));
         }
 
         $user->setPassword($newHashedPassword);
@@ -67,28 +80,22 @@ class CustomersRepository extends ServiceEntityRepository implements PasswordUpg
         $this->add($user, true);
     }
 
-//    /**
-//     * @return Customers[] Returns an array of Customers objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
 
-//    public function findOneBySomeField($value): ?Customers
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * @param Customers $entity parameter
+     * @param bool      $flush  parameter
+     *
+     * @return void
+     */
+    public function add(Customers $entity, bool $flush = false): void
+    {
+
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+
 }
