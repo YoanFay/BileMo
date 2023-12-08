@@ -68,6 +68,7 @@ class PhonesController extends AbstractController
         $phoneList = $phonesRepository->findAllWithPagination($page, $limit);
         $jsonPhoneList = $serializer->serialize($phoneList, 'json', ["groups" => "getCustomers"]);
         return new JsonResponse($jsonPhoneList, Response::HTTP_OK, [], true);
+
     }
 
 
@@ -104,5 +105,6 @@ class PhonesController extends AbstractController
         $jsonPhone = $serializer->serialize($phones, 'json', ["groups" => "getCustomers"]);
         return new JsonResponse($jsonPhone, Response::HTTP_OK, [], true);
     }
+
 
 }

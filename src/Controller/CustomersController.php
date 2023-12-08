@@ -71,6 +71,7 @@ class CustomersController extends AbstractController
         $customerList = $customersRepository->findAllWithPagination($page, $limit);
         $jsonCustomerList = $serializer->serialize($customerList, 'json', ["groups" => "getCustomers"]);
         return new JsonResponse($jsonCustomerList, Response::HTTP_OK, [], true);
+
     }
 
 
@@ -108,5 +109,6 @@ class CustomersController extends AbstractController
         $jsonCustomer = $serializer->serialize($customers, 'json', ["groups" => "getCustomers"]);
         return new JsonResponse($jsonCustomer, Response::HTTP_OK, [], true);
     }
+
 
 }

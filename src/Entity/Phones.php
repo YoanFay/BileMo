@@ -7,6 +7,7 @@ namespace App\Entity;
  */
 class Phones
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -81,11 +82,12 @@ class Phones
     {
 
         return $this->id;
+
     }
 
 
     /**
-     * @param int $id
+     * @param int $id parameter
      *
      * @return $this
      */
@@ -109,7 +111,7 @@ class Phones
 
 
     /**
-     * @param string $model
+     * @param string $model parameter
      *
      * @return $this
      */
@@ -133,7 +135,7 @@ class Phones
 
 
     /**
-     * @param string $brand
+     * @param string $brand parameter
      *
      * @return $this
      */
@@ -157,7 +159,7 @@ class Phones
 
 
     /**
-     * @param string $color
+     * @param string $color parameter
      *
      * @return $this
      */
@@ -181,7 +183,7 @@ class Phones
 
 
     /**
-     * @param float $price
+     * @param float $price parameter
      *
      * @return $this
      */
@@ -192,4 +194,6 @@ class Phones
 
         return $this;
     }
+
+
 }

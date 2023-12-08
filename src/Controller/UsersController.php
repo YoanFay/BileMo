@@ -52,9 +52,9 @@ class UsersController extends AbstractController
      * )
      * @OA\Tag(name="Users")
      *
-     * @param UsersRepository     $usersRepository
-     * @param SerializerInterface $serializer
-     * @param Request             $request
+     * @param UsersRepository     $usersRepository parameter
+     * @param SerializerInterface $serializer      parameter
+     * @param Request             $request         parameter
      *
      * @return JsonResponse
      *
@@ -73,6 +73,7 @@ class UsersController extends AbstractController
         $userList = $usersRepository->findAllWithPagination($page, $limit);
         $jsonUserList = $serializer->serialize($userList, 'json', ["groups" => "getUsers"]);
         return new JsonResponse($jsonUserList, Response::HTTP_OK, [], true);
+
     }
 
 
@@ -96,8 +97,8 @@ class UsersController extends AbstractController
      * )
      *
      * @OA\Tag(name="Users")
-     * @param Users               $users
-     * @param SerializerInterface $serializer
+     * @param Users               $users      parameter
+     * @param SerializerInterface $serializer parameter
      *
      * @return JsonResponse
      *
@@ -130,18 +131,18 @@ class UsersController extends AbstractController
      *
      * @OA\Tag(name="Users")
      *
-     * @param Request                $request
-     * @param SerializerInterface    $serializer
-     * @param EntityManagerInterface $em
-     * @param UrlGeneratorInterface  $urlGenerator
-     * @param ValidatorInterface     $validator
-     * @param CustomersRepository    $customersRepository
+     * @param Request                $request             parameter
+     * @param SerializerInterface    $serializer          parameter
+     * @param EntityManagerInterface $manager             parameter
+     * @param UrlGeneratorInterface  $urlGenerator        parameter
+     * @param ValidatorInterface     $validator           parameter
+     * @param CustomersRepository    $customersRepository parameter
      *
      * @return JsonResponse
      *
      * @Route("/api/users", name="createUser", methods="POST")
      */
-    public function createUsers(Request $request, SerializerInterface $serializer, EntityManagerInterface $em, UrlGeneratorInterface $urlGenerator, ValidatorInterface $validator, CustomersRepository $customersRepository): JsonResponse
+    public function createUsers(Request $request, SerializerInterface $serializer, EntityManagerInterface $manager, UrlGeneratorInterface $urlGenerator, ValidatorInterface $validator, CustomersRepository $customersRepository): JsonResponse
     {
 
         dump($request->getContent());
@@ -156,8 +157,8 @@ class UsersController extends AbstractController
 
         $user->setCustomer($customersRepository->find($request->toArray()['idCustomer']));
 
-        $em->persist($user);
-        $em->flush();
+        $manager->persist($user);
+        $manager->flush();
 
         $jsonUser = $serializer->serialize($user, 'json', ["groups" => "getUsers"]);
         $location = $urlGenerator->generate('detailUser', ['id' => $user->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
@@ -188,13 +189,13 @@ class UsersController extends AbstractController
      * @param Request                $request     parameter
      * @param SerializerInterface    $serializer  parameter
      * @param Users                  $currentUser parameter
-     * @param EntityManagerInterface $em          parameter
+     * @param EntityManagerInterface $manager     parameter
      *
      * @return JsonResponse
      *
      * @Route("/api/users/{id}", name="updateUser", methods="PUT")
      */
-    public function updateUser(Request $request, SerializerInterface $serializer, Users $currentUser, EntityManagerInterface $em): JsonResponse
+    public function updateUser(Request $request, SerializerInterface $serializer, Users $currentUser, EntityManagerInterface $manager): JsonResponse
     {
 
         $updatedUser = $serializer->deserialize(
@@ -204,8 +205,8 @@ class UsersController extends AbstractController
             [AbstractNormalizer::OBJECT_TO_POPULATE => $currentUser]
         );
 
-        $em->persist($updatedUser);
-        $em->flush();
+        $manager->persist($updatedUser);
+        $manager->flush();
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
@@ -227,19 +228,21 @@ class UsersController extends AbstractController
      *
      * @OA\Tag(name="Users")
      *
-     * @param Users                  $users parameter
-     * @param EntityManagerInterface $em    parameter
+     * @param Users                  $users   parameter
+     * @param EntityManagerInterface $manager parameter
      *
      * @return JsonResponse
      *
      * @Route("/api/users/{id}", name="deleteUsers", methods="DELETE")
      */
-    public function deleteUser(Users $users, EntityManagerInterface $em): JsonResponse
+    public function deleteUser(Users $users, EntityManagerInterface $manager): JsonResponse
     {
 
-        $em->remove($users);
-        $em->flush();
+        $manager->remove($users);
+        $manager->flush();
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
+
+
 }

@@ -32,6 +32,12 @@ class CustomersRepository extends ServiceEntityRepository implements PasswordUpg
     }
 
 
+    /**
+     * @param Customers $entity parameter
+     * @param bool      $flush  parameter
+     *
+     * @return void
+     */
     public function remove(Customers $entity, bool $flush = false): void
     {
 
@@ -40,6 +46,7 @@ class CustomersRepository extends ServiceEntityRepository implements PasswordUpg
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+
     }
 
 
@@ -59,11 +66,16 @@ class CustomersRepository extends ServiceEntityRepository implements PasswordUpg
             ->getResult();
     }
 
+
     /**
-     * Used to upgrade (rehash) the user's password automatically over time.
+     * @param PasswordAuthenticatedUserInterface $user              parameter
+     * @param string                             $newHashedPassword parameter
+     *
+     * @return void
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
+
         if (!$user instanceof Customers) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
         }
