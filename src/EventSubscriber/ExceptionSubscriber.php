@@ -18,6 +18,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
     {
 
         return ['kernel.exception' => 'onKernelException'];
+
     }
 
 
@@ -30,23 +31,21 @@ class ExceptionSubscriber implements EventSubscriberInterface
     {
 
         $exception = $event->getThrowable();
+        $data = [
+            'status' => 500,
+            'message' => $exception->getMessage()
+        ];
 
         if ($exception instanceof HttpException) {
             $data = [
                 'status' => $exception->getStatusCode(),
                 'message' => $exception->getMessage()
             ];
-
-            $event->setResponse(new JsonResponse($data));
-        } else {
-            $data = [
-                'status' => 500,
-                'message' => $exception->getMessage()
-            ];
-
-            $event->setResponse(new JsonResponse($data));
         }
 
+        $event->setResponse(new JsonResponse($data));
+
     }
+
 
 }

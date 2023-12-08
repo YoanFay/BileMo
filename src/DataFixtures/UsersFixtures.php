@@ -16,7 +16,7 @@ class UsersFixtures extends Fixture implements DependentFixtureInterface
 
 
     /**
-     * @param CustomersRepository $customersRepository
+     * @param CustomersRepository $customersRepository parameter
      */
     public function __construct(CustomersRepository $customersRepository)
     {
@@ -27,7 +27,7 @@ class UsersFixtures extends Fixture implements DependentFixtureInterface
 
 
     /**
-     * @param ObjectManager $manager
+     * @param ObjectManager $manager parameter
      *
      * @return void
      */
@@ -74,6 +74,7 @@ class UsersFixtures extends Fixture implements DependentFixtureInterface
         }
 
         $manager->flush();
+
     }
 
 

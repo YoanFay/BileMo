@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  * @method Customers[]    findAll()
  * @method Customers[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CustomersRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class CustomersRepository extends ServiceEntityRepository
 {
 
 
@@ -64,25 +64,6 @@ class CustomersRepository extends ServiceEntityRepository implements PasswordUpg
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
-    }
-
-
-    /**
-     * @param PasswordAuthenticatedUserInterface $user              parameter
-     * @param string                             $newHashedPassword parameter
-     *
-     * @return void
-     */
-    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
-    {
-
-        if (!$user instanceof Customers) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
-        }
-
-        $user->setPassword($newHashedPassword);
-
-        $this->add($user, true);
     }
 
 

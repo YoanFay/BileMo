@@ -19,6 +19,7 @@ use OpenApi\Annotations as OA;
  */
 class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -46,6 +47,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups("getCustomers", "getUsers")
      * @Assert\NotBlank(message = "Les rôles sont obligatoires")
      * @OA\Property(type="array", @OA\Items(type="string"))
+     * @var string[] $roles
      */
     private array $roles = [];
 
@@ -86,6 +88,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\OneToMany(targetEntity=Users::class, mappedBy="customer")
      * @Groups("getCustomers")
+     * @var ArrayCollection<int, Users>
      */
     private ArrayCollection $users;
 
@@ -97,6 +100,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     {
 
         $this->users = new ArrayCollection();
+
     }
 
 
@@ -111,7 +115,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     /**
-     * @param int $id
+     * @param int $id parameter
      *
      * @return $this
      */
@@ -135,7 +139,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     /**
-     * @param string $email
+     * @param string $email parameter
      *
      * @return $this
      */
@@ -175,7 +179,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     /**
-     * @param array $roles
+     * @param string[] $roles parameter
      *
      * @return $this
      */
@@ -199,7 +203,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     /**
-     * @param string $password
+     * @param string $password parameter
      *
      * @return $this
      */
@@ -247,7 +251,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     /**
-     * @param string $firstname
+     * @param string $firstname parameter
      *
      * @return $this
      */
@@ -271,7 +275,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     /**
-     * @param string $lastname
+     * @param string $lastname parameter
      *
      * @return $this
      */
@@ -295,7 +299,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     /**
-     * @param Users $user
+     * @param Users $user parameter
      *
      * @return $this
      */
@@ -312,7 +316,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     /**
-     * @param Users $user
+     * @param Users $user parameter
      *
      * @return $this
      */
@@ -338,4 +342,6 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this->getUserIdentifier();
     }
+
+
 }

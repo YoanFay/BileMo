@@ -118,11 +118,12 @@ class Users
     {
 
         return $this->id;
+
     }
 
 
     /**
-     * @param int $id
+     * @param int $id parameter
      *
      * @return $this
      */
@@ -146,7 +147,7 @@ class Users
 
 
     /**
-     * @param string $firstname
+     * @param string $firstname parameter
      *
      * @return $this
      */
@@ -170,7 +171,7 @@ class Users
 
 
     /**
-     * @param string $lastname
+     * @param string $lastname parameter
      *
      * @return $this
      */
@@ -194,7 +195,7 @@ class Users
 
 
     /**
-     * @param string $email
+     * @param string $email parameter
      *
      * @return $this
      */
@@ -218,7 +219,7 @@ class Users
 
 
     /**
-     * @param string $address
+     * @param string $address parameter
      *
      * @return $this
      */
@@ -242,7 +243,7 @@ class Users
 
 
     /**
-     * @param string $city
+     * @param string $city parameter
      *
      * @return $this
      */
@@ -266,7 +267,7 @@ class Users
 
 
     /**
-     * @param int $zipcode
+     * @param int $zipcode parameter
      *
      * @return $this
      */
@@ -290,7 +291,7 @@ class Users
 
 
     /**
-     * @param Customers|null $customer
+     * @param Customers|null $customer parameter
      *
      * @return $this
      */
@@ -301,4 +302,6 @@ class Users
 
         return $this;
     }
+
+
 }
