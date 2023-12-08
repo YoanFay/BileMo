@@ -8,6 +8,13 @@ use Doctrine\Persistence\ObjectManager;
 
 class PhonesFixtures extends Fixture
 {
+
+
+    /**
+     * @param ObjectManager $manager parameter
+     *
+     * @return void
+     */
     public function load(ObjectManager $manager): void
     {
 
@@ -59,7 +66,6 @@ class PhonesFixtures extends Fixture
         ];
 
         foreach ($phones as $phone) {
-
             $phoneEntity = new Phones();
 
             $phoneEntity->setModel($phone['model']);
@@ -68,9 +74,9 @@ class PhonesFixtures extends Fixture
             $phoneEntity->setPrice(floatval($phone['price']));
 
             $manager->persist($phoneEntity);
-
         }
 
         $manager->flush();
     }
+
 }

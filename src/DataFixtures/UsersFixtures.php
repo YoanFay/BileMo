@@ -15,13 +15,22 @@ class UsersFixtures extends Fixture implements DependentFixtureInterface
     private CustomersRepository $customersRepository;
 
 
+    /**
+     * @param CustomersRepository $customersRepository
+     */
     public function __construct(CustomersRepository $customersRepository)
     {
 
         $this->customersRepository = $customersRepository;
+
     }
 
 
+    /**
+     * @param ObjectManager $manager
+     *
+     * @return void
+     */
     public function load(ObjectManager $manager): void
     {
 
@@ -48,7 +57,6 @@ class UsersFixtures extends Fixture implements DependentFixtureInterface
         ];
 
         foreach ($users as $user) {
-
             $userEntity = new Users();
 
             $userEntity->setFirstname($user['firstname']);
@@ -63,7 +71,6 @@ class UsersFixtures extends Fixture implements DependentFixtureInterface
             $userEntity->setCustomer($customers[array_rand($customers)]);
 
             $manager->persist($userEntity);
-
         }
 
         $manager->flush();
@@ -76,8 +83,8 @@ class UsersFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
 
-        return [
-            CustomersFixtures::class,
-        ];
+        return [CustomersFixtures::class];
     }
+
+
 }

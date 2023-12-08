@@ -9,8 +9,26 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ExceptionSubscriber implements EventSubscriberInterface
 {
+
+
+    /**
+     * @return string[]
+     */
+    public static function getSubscribedEvents(): array
+    {
+
+        return ['kernel.exception' => 'onKernelException'];
+    }
+
+
+    /**
+     * @param ExceptionEvent $event parameter
+     *
+     * @return void
+     */
     public function onKernelException(ExceptionEvent $event): void
     {
+
         $exception = $event->getThrowable();
 
         if ($exception instanceof HttpException) {
@@ -28,12 +46,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
 
             $event->setResponse(new JsonResponse($data));
         }
+
     }
 
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            'kernel.exception' => 'onKernelException',
-        ];
-    }
 }

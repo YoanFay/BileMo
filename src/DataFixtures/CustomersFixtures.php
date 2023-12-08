@@ -13,13 +13,22 @@ class CustomersFixtures extends Fixture
     private UserPasswordHasherInterface $userPasswordHasher;
 
 
+    /**
+     * @param UserPasswordHasherInterface $userPasswordHasher parameter
+     */
     public function __construct(UserPasswordHasherInterface $userPasswordHasher)
     {
 
         $this->userPasswordHasher = $userPasswordHasher;
+
     }
 
 
+    /**
+     * @param ObjectManager $manager parameter
+     *
+     * @return void
+     */
     public function load(ObjectManager $manager): void
     {
 
@@ -37,7 +46,6 @@ class CustomersFixtures extends Fixture
         ];
 
         foreach ($customers as $customer) {
-
             $customerEntity = new Customers();
 
             $customerEntity->setFirstname($customer['firstname']);
@@ -47,9 +55,9 @@ class CustomersFixtures extends Fixture
             $customerEntity->setRoles(["ROLE_CUSTOMERS"]);
 
             $manager->persist($customerEntity);
-
         }
 
         $manager->flush();
     }
+
 }
