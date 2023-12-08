@@ -65,7 +65,7 @@ class PhonesFixtures extends Fixture
             $phoneEntity->setModel($phone['model']);
             $phoneEntity->setBrand($phone['brand']);
             $phoneEntity->setColor($phone['color']);
-            $phoneEntity->setPrice($phone['price']);
+            $phoneEntity->setPrice(floatval($phone['price']));
 
             $manager->persist($phoneEntity);
 

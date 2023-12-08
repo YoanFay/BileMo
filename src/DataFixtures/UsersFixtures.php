@@ -12,7 +12,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class UsersFixtures extends Fixture implements DependentFixtureInterface
 {
 
-    private $customersRepository;
+    private CustomersRepository $customersRepository;
 
 
     public function __construct(CustomersRepository $customersRepository)
@@ -30,8 +30,7 @@ class UsersFixtures extends Fixture implements DependentFixtureInterface
             ['firstname' => 'Pierre', 'lastname' => 'Martin', 'email' => 'pierre.martin@example.com', 'address' => '27 Avenue de la Liberté', 'city' => 'Marseille', 'zipcode' => '13001'],
             ['firstname' => 'Sophie', 'lastname' => 'Moreau', 'email' => 'sophie.moreau@example.com', 'address' => '8 Rue des Fleurs', 'city' => 'Toulouse', 'zipcode' => '31000'],
             ['firstname' => 'Lucas', 'lastname' => 'Lefebvre', 'email' => 'lucas.lefebvre@example.com', 'address' => '56 Avenue des Étoiles', 'city' => 'Nice', 'zipcode' => '06000'],
-            ['firstname' => 'Camille', 'lastname' => 'Dubois', 'email' => 'camille.dubois@example.com', 'address' => '12 Rue de la Paix', 'city' => 'Strasbourg', 'zipcode' => '67000'
-            ],
+            ['firstname' => 'Camille', 'lastname' => 'Dubois', 'email' => 'camille.dubois@example.com', 'address' => '12 Rue de la Paix', 'city' => 'Strasbourg', 'zipcode' => '67000'],
             ['firstname' => 'Antoine', 'lastname' => 'Roy', 'email' => 'antoine.roy@example.com', 'address' => '33 Boulevard Voltaire', 'city' => 'Bordeaux', 'zipcode' => '33000'],
             ['firstname' => 'Emma', 'lastname' => 'Garcia', 'email' => 'emma.garcia@example.com', 'address' => '19 Rue du Château', 'city' => 'Nantes', 'zipcode' => '44000'],
             ['firstname' => 'Louis', 'lastname' => 'Sanchez', 'email' => 'louis.sanchez@example.com', 'address' => '7 Avenue des Roses', 'city' => 'Lille', 'zipcode' => '59000'],
@@ -57,7 +56,7 @@ class UsersFixtures extends Fixture implements DependentFixtureInterface
             $userEntity->setEmail($user['email']);
             $userEntity->setAddress($user['address']);
             $userEntity->setCity($user['city']);
-            $userEntity->setZipcode($user['zipcode']);
+            $userEntity->setZipcode(intval($user['zipcode']));
 
             $customers = $this->customersRepository->findAll();
 

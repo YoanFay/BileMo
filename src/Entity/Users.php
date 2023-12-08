@@ -13,13 +13,15 @@ use OpenApi\Annotations\Property;
  */
 class Users
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups("getUsers", "getCustomers")
+     * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -33,7 +35,7 @@ class Users
      * )
      * @Property(description="Prénom de l'utilisateur")
      */
-    private $firstname;
+    private string $firstname;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -47,7 +49,7 @@ class Users
      * )
      * @Property(description="Nom de l'utilisateur")
      */
-    private $lastname;
+    private string $lastname;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -62,7 +64,7 @@ class Users
      * )
      * @Property(description="Email de l'utilisateur")
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -76,7 +78,7 @@ class Users
      * )
      * @Property(description="Adresse de l'utilisateur")
      */
-    private $address;
+    private string $address;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -90,7 +92,7 @@ class Users
      * )
      * @Property(description="Ville de l'utilisateur")
      */
-    private $city;
+    private string $city;
 
     /**
      * @ORM\Column(type="integer")
@@ -98,7 +100,7 @@ class Users
      * @Assert\NotBlank(message = "Le code postal est obligatoire")
      * @Property(description="Code postal de l'utilisateur")
      */
-    private $zipcode;
+    private int $zipcode;
 
     /**
      * @ORM\ManyToOne(targetEntity=Customers::class, inversedBy="users")
@@ -106,92 +108,195 @@ class Users
      * @Groups("getUsers")
      * @Property(description="Client lié à l'utilisateur")
      */
-    private $customer;
+    private Customers $customer;
 
+
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
+
         return $this->id;
     }
 
+
+    /**
+     * @param int $id
+     *
+     * @return $this
+     */
+    public function setId(int $id): self
+    {
+
+        $this->id = $id;
+
+        return $this;
+    }
+
+
+    /**
+     * @return string|null
+     */
     public function getFirstname(): ?string
     {
+
         return $this->firstname;
     }
 
+
+    /**
+     * @param string $firstname
+     *
+     * @return $this
+     */
     public function setFirstname(string $firstname): self
     {
+
         $this->firstname = $firstname;
 
         return $this;
     }
 
+
+    /**
+     * @return string|null
+     */
     public function getLastname(): ?string
     {
+
         return $this->lastname;
     }
 
+
+    /**
+     * @param string $lastname
+     *
+     * @return $this
+     */
     public function setLastname(string $lastname): self
     {
+
         $this->lastname = $lastname;
 
         return $this;
     }
 
+
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
+
         return $this->email;
     }
 
+
+    /**
+     * @param string $email
+     *
+     * @return $this
+     */
     public function setEmail(string $email): self
     {
+
         $this->email = $email;
 
         return $this;
     }
 
+
+    /**
+     * @return string|null
+     */
     public function getAddress(): ?string
     {
+
         return $this->address;
     }
 
+
+    /**
+     * @param string $address
+     *
+     * @return $this
+     */
     public function setAddress(string $address): self
     {
+
         $this->address = $address;
 
         return $this;
     }
 
+
+    /**
+     * @return string|null
+     */
     public function getCity(): ?string
     {
+
         return $this->city;
     }
 
+
+    /**
+     * @param string $city
+     *
+     * @return $this
+     */
     public function setCity(string $city): self
     {
+
         $this->city = $city;
 
         return $this;
     }
 
+
+    /**
+     * @return int|null
+     */
     public function getZipcode(): ?int
     {
+
         return $this->zipcode;
     }
 
+
+    /**
+     * @param int $zipcode
+     *
+     * @return $this
+     */
     public function setZipcode(int $zipcode): self
     {
+
         $this->zipcode = $zipcode;
 
         return $this;
     }
 
+
+    /**
+     * @return Customers|null
+     */
     public function getCustomer(): ?Customers
     {
+
         return $this->customer;
     }
 
+
+    /**
+     * @param Customers|null $customer
+     *
+     * @return $this
+     */
     public function setCustomer(?Customers $customer): self
     {
+
         $this->customer = $customer;
 
         return $this;

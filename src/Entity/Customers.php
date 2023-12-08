@@ -25,7 +25,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="integer")
      * @Groups("getCustomers", "getUsers")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
@@ -39,7 +39,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
      *      maxMessage = "Votre e-mail ne peut pas comporter plus de {{ limit }} caractères."
      * )
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="json")
@@ -47,7 +47,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\NotBlank(message = "Les rôles sont obligatoires")
      * @OA\Property(type="array", @OA\Items(type="string"))
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var string The hashed password
@@ -55,7 +55,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups("getCustomers", "getUsers")
      * @Assert\NotBlank(message = "Le mot de passe est obligatoires")
      */
-    private $password;
+    private string $password;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -68,7 +68,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
      *      maxMessage = "Votre prénom ne peut pas contenir plus de {{ limit }} caractères."
      * )
      */
-    private $firstname;
+    private string $firstname;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -81,15 +81,18 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
      *      maxMessage = "Votre nom de famille ne peut pas comporter plus de {{ limit }} caractères."
      * )
      */
-    private $lastname;
+    private string $lastname;
 
     /**
      * @ORM\OneToMany(targetEntity=Users::class, mappedBy="customer")
      * @Groups("getCustomers")
      */
-    private $users;
+    private ArrayCollection $users;
 
 
+    /**
+     *
+     */
     public function __construct()
     {
 
@@ -97,6 +100,9 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
 
@@ -104,6 +110,23 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
+    /**
+     * @param int $id
+     *
+     * @return $this
+     */
+    public function setId(int $id): self
+    {
+
+        $this->id = $id;
+
+        return $this;
+    }
+
+
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
 
@@ -111,6 +134,11 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
+    /**
+     * @param string $email
+     *
+     * @return $this
+     */
     public function setEmail(string $email): self
     {
 
@@ -133,16 +161,6 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     /**
-     * @deprecated since Symfony 5.3, use getUserIdentifier instead
-     */
-    /*public function getUsername(): string
-    {
-
-        return (string)$this->email;
-    }*/
-
-
-    /**
      * @see UserInterface
      */
     public function getRoles(): array
@@ -156,6 +174,11 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
+    /**
+     * @param array $roles
+     *
+     * @return $this
+     */
     public function setRoles(array $roles): self
     {
 
@@ -175,6 +198,11 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
+    /**
+     * @param string $password
+     *
+     * @return $this
+     */
     public function setPassword(string $password): self
     {
 
@@ -208,6 +236,9 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
+    /**
+     * @return string|null
+     */
     public function getFirstname(): ?string
     {
 
@@ -215,6 +246,11 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
+    /**
+     * @param string $firstname
+     *
+     * @return $this
+     */
     public function setFirstname(string $firstname): self
     {
 
@@ -224,6 +260,9 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
+    /**
+     * @return string|null
+     */
     public function getLastname(): ?string
     {
 
@@ -231,6 +270,11 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
+    /**
+     * @param string $lastname
+     *
+     * @return $this
+     */
     public function setLastname(string $lastname): self
     {
 
@@ -250,6 +294,11 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
+    /**
+     * @param Users $user
+     *
+     * @return $this
+     */
     public function addUser(Users $user): self
     {
 
@@ -262,6 +311,11 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
+    /**
+     * @param Users $user
+     *
+     * @return $this
+     */
     public function removeUser(Users $user): self
     {
 

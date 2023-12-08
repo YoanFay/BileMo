@@ -2,11 +2,6 @@
 
 namespace App\Entity;
 
-use App\Repository\PhonesRepository;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
-
 /**
  * @ORM\Entity(repositoryClass=PhonesRepository::class)
  */
@@ -18,7 +13,7 @@ class Phones
      * @ORM\Column(type="integer")
      * @Groups("getPhones")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=90)
@@ -34,7 +29,7 @@ class Phones
      *     message="La valeur {{ value }} n'est pas de type {{ type }}."
      * )
      */
-    private $model;
+    private string $model;
 
     /**
      * @ORM\Column(type="string", length=20)
@@ -50,7 +45,7 @@ class Phones
      *     message="La valeur {{ value }} n'est pas de type {{ type }}."
      * )
      */
-    private $brand;
+    private string $brand;
 
     /**
      * @ORM\Column(type="string", length=25)
@@ -66,7 +61,7 @@ class Phones
      *     message="La valeur {{ value }} n'est pas de type {{ type }}."
      * )
      */
-    private $color;
+    private string $color;
 
     /**
      * @ORM\Column(type="float")
@@ -76,56 +71,123 @@ class Phones
      *     message="La valeur {{ value }} n'est pas de type {{ type }}."
      * )
      */
-    private $price;
+    private float $price;
 
+
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
+
         return $this->id;
     }
 
+
+    /**
+     * @param int $id
+     *
+     * @return $this
+     */
+    public function setId(int $id): self
+    {
+
+        $this->id = $id;
+
+        return $this;
+    }
+
+
+    /**
+     * @return string|null
+     */
     public function getModel(): ?string
     {
+
         return $this->model;
     }
 
+
+    /**
+     * @param string $model
+     *
+     * @return $this
+     */
     public function setModel(string $model): self
     {
+
         $this->model = $model;
 
         return $this;
     }
 
+
+    /**
+     * @return string|null
+     */
     public function getBrand(): ?string
     {
+
         return $this->brand;
     }
 
+
+    /**
+     * @param string $brand
+     *
+     * @return $this
+     */
     public function setBrand(string $brand): self
     {
+
         $this->brand = $brand;
 
         return $this;
     }
 
+
+    /**
+     * @return string|null
+     */
     public function getColor(): ?string
     {
+
         return $this->color;
     }
 
+
+    /**
+     * @param string $color
+     *
+     * @return $this
+     */
     public function setColor(string $color): self
     {
+
         $this->color = $color;
 
         return $this;
     }
 
+
+    /**
+     * @return float|null
+     */
     public function getPrice(): ?float
     {
+
         return $this->price;
     }
 
+
+    /**
+     * @param float $price
+     *
+     * @return $this
+     */
     public function setPrice(float $price): self
     {
+
         $this->price = $price;
 
         return $this;
