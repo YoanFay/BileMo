@@ -56,7 +56,7 @@ class UsersFixtures extends Fixture implements DependentFixtureInterface
             $userEntity->setEmail($user['email']);
             $userEntity->setAddress($user['address']);
             $userEntity->setCity($user['city']);
-            $userEntity->setZipcode(intval($user['zipcode']));
+            $userEntity->setZipcode((int)$user['zipcode']);
 
             $customers = $this->customersRepository->findAll();
 

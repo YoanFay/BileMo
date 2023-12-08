@@ -61,7 +61,7 @@ class UsersController extends AbstractController
      * @Route("/api/users", name="users", methods="GET")
      */
     public function getUsersList(
-        UsersRepository    $usersRepository,
+        UsersRepository     $usersRepository,
         SerializerInterface $serializer,
         Request             $request
     ): JsonResponse
@@ -96,7 +96,6 @@ class UsersController extends AbstractController
      * )
      *
      * @OA\Tag(name="Users")
-
      * @param Users               $users
      * @param SerializerInterface $serializer
      *
@@ -186,10 +185,10 @@ class UsersController extends AbstractController
      *
      * @OA\Tag(name="Users")
      *
-     * @param Request                $request
-     * @param SerializerInterface    $serializer
-     * @param Users                  $currentUser
-     * @param EntityManagerInterface $em
+     * @param Request                $request     parameter
+     * @param SerializerInterface    $serializer  parameter
+     * @param Users                  $currentUser parameter
+     * @param EntityManagerInterface $em          parameter
      *
      * @return JsonResponse
      *
@@ -228,8 +227,8 @@ class UsersController extends AbstractController
      *
      * @OA\Tag(name="Users")
      *
-     * @param Users                  $users
-     * @param EntityManagerInterface $em
+     * @param Users                  $users parameter
+     * @param EntityManagerInterface $em    parameter
      *
      * @return JsonResponse
      *

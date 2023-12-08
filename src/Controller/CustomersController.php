@@ -50,9 +50,9 @@ class CustomersController extends AbstractController
      * )
      * @OA\Tag(name="Customers")
      *
-     * @param CustomersRepository $customersRepository
-     * @param SerializerInterface $serializer
-     * @param Request             $request
+     * @param CustomersRepository $customersRepository parameter
+     * @param SerializerInterface $serializer          parameter
+     * @param Request             $request             parameter
      *
      * @return JsonResponse
      *
@@ -95,8 +95,8 @@ class CustomersController extends AbstractController
      *
      * @OA\Tag(name="Customers")
      *
-     * @param Customers           $customers
-     * @param SerializerInterface $serializer
+     * @param Customers           $customers  parameter
+     * @param SerializerInterface $serializer parameter
      *
      * @return JsonResponse
      *

@@ -47,9 +47,10 @@ class PhonesController extends AbstractController
      * )
      * @OA\Tag(name="Phones")
      *
-     * @param PhonesRepository $phonesRepository
-     * @param SerializerInterface $serializer
-     * @param Request $request
+     * @param PhonesRepository    $phonesRepository parameter
+     * @param SerializerInterface $serializer       parameter
+     * @param Request             $request          parameter
+     *
      * @return JsonResponse
      *
      * @Route("/api/phones", name="phones", methods="GET")
@@ -68,6 +69,7 @@ class PhonesController extends AbstractController
         $jsonPhoneList = $serializer->serialize($phoneList, 'json', ["groups" => "getCustomers"]);
         return new JsonResponse($jsonPhoneList, Response::HTTP_OK, [], true);
     }
+
 
     /** Cette méthode permet de récupérer les détails d'un téléphone.
      *
@@ -89,9 +91,8 @@ class PhonesController extends AbstractController
      * )
      *
      * @OA\Tag(name="Phones")
-
-     * @param Phones              $phones
-     * @param SerializerInterface $serializer
+     * @param Phones              $phones     parameter
+     * @param SerializerInterface $serializer parameter
      *
      * @return JsonResponse
      *
