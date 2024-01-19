@@ -58,7 +58,7 @@ class CustomersController extends AbstractController
      *
      * @Route("/api/customers", name="customers", methods="GET")
      */
-    public function getCustomersList(
+    /*public function getCustomersList(
         CustomersRepository $customersRepository,
         SerializerInterface $serializer,
         Request             $request
@@ -72,7 +72,7 @@ class CustomersController extends AbstractController
         $jsonCustomerList = $serializer->serialize($customerList, 'json', ["groups" => "getCustomers"]);
         return new JsonResponse($jsonCustomerList, Response::HTTP_OK, [], true);
 
-    }
+    }*/
 
 
     /** Cette méthode permet de récupérer les détails d'un client.
@@ -103,12 +103,12 @@ class CustomersController extends AbstractController
      *
      * @Route("/api/customers/{id}", name="detailCustomer", methods="GET")
      */
-    public function getDetailCustomer(Customers $customers, SerializerInterface $serializer): JsonResponse
+    /*public function getDetailCustomer(Customers $customers, SerializerInterface $serializer): JsonResponse
     {
 
         $jsonCustomer = $serializer->serialize($customers, 'json', ["groups" => "getCustomers"]);
         return new JsonResponse($jsonCustomer, Response::HTTP_OK, [], true);
-    }
+    }*/
 
 
 }

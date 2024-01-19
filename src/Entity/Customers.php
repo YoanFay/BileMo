@@ -90,7 +90,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups("getCustomers")
      * @var ArrayCollection<int, Users>
      */
-    private ArrayCollection $users;
+    private $users;
 
 
     /**

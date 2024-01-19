@@ -145,8 +145,6 @@ class UsersController extends AbstractController
     public function createUsers(Request $request, SerializerInterface $serializer, EntityManagerInterface $manager, UrlGeneratorInterface $urlGenerator, ValidatorInterface $validator, CustomersRepository $customersRepository): JsonResponse
     {
 
-        dump($request->getContent());
-
         $user = $serializer->deserialize($request->getContent(), Users::class, 'json');
 
         $errors = $validator->validate($user);
