@@ -44,7 +44,6 @@ use Hateoas\Configuration\Annotation as Hateoas;
  */
 class Users
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -150,7 +149,6 @@ class Users
     {
 
         return $this->id;
-
     }
 
 
@@ -334,6 +332,4 @@ class Users
 
         return $this;
     }
-
-
 }

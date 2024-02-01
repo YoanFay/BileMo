@@ -22,8 +22,6 @@ use OpenApi\Annotations as OA;
 
 class PhonesController extends AbstractController
 {
-
-
     /** Cette méthode permet de récupérer l'ensemble des téléphones.
      *
      * @OA\Response(
@@ -58,11 +56,10 @@ class PhonesController extends AbstractController
      * @Route("/api/phones", name="phones", methods="GET")
      */
     public function getPhonesList(
-        PhonesRepository    $phonesRepository,
+        PhonesRepository $phonesRepository,
         SerializerInterface $serializer,
-        Request             $request
-    ): JsonResponse
-    {
+        Request $request
+    ): JsonResponse {
 
         /** @var int $page */
         $page = $request->get('page', 1);
@@ -75,7 +72,6 @@ class PhonesController extends AbstractController
         $context = SerializationContext::create()->setGroups(['getPhones']);
         $jsonPhoneList = $serializer->serialize($phoneList, 'json', $context);
         return new JsonResponse($jsonPhoneList, Response::HTTP_OK, [], true);
-
     }
 
 
@@ -113,6 +109,4 @@ class PhonesController extends AbstractController
         $jsonPhone = $serializer->serialize($phones, 'json', $context);
         return new JsonResponse($jsonPhone, Response::HTTP_OK, [], true);
     }
-
-
 }

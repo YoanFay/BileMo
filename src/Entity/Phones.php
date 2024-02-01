@@ -13,7 +13,6 @@ use OpenApi\Annotations\Property;
  */
 class Phones
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -88,7 +87,6 @@ class Phones
     {
 
         return $this->id;
-
     }
 
 
@@ -200,6 +198,4 @@ class Phones
 
         return $this;
     }
-
-
 }

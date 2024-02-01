@@ -9,8 +9,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ExceptionSubscriber implements EventSubscriberInterface
 {
-
-
     /**
      * @return string[]
      */
@@ -18,7 +16,6 @@ class ExceptionSubscriber implements EventSubscriberInterface
     {
 
         return ['kernel.exception' => 'onKernelException'];
-
     }
 
 
@@ -44,8 +41,5 @@ class ExceptionSubscriber implements EventSubscriberInterface
         }
 
         $event->setResponse(new JsonResponse($data));*/
-
     }
-
-
 }

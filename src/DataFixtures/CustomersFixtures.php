@@ -9,7 +9,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class CustomersFixtures extends Fixture
 {
-
     private UserPasswordHasherInterface $userPasswordHasher;
 
 
@@ -20,7 +19,6 @@ class CustomersFixtures extends Fixture
     {
 
         $this->userPasswordHasher = $userPasswordHasher;
-
     }
 
 
@@ -59,5 +57,4 @@ class CustomersFixtures extends Fixture
 
         $manager->flush();
     }
-
 }

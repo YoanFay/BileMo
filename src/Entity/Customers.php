@@ -19,7 +19,6 @@ use OpenApi\Annotations as OA;
  */
 class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -100,7 +99,6 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     {
 
         $this->users = new ArrayCollection();
-
     }
 
 
@@ -337,6 +335,4 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this->getUserIdentifier();
     }
-
-
 }

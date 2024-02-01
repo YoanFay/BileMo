@@ -23,8 +23,6 @@ use OpenApi\Annotations as OA;
 
 class CustomersController extends AbstractController
 {
-
-
     /** Cette méthode permet de récupérer l'ensemble des clients.
      *
      * @OA\Response(
@@ -109,6 +107,4 @@ class CustomersController extends AbstractController
         $jsonCustomer = $serializer->serialize($customers, 'json', ["groups" => "getCustomers"]);
         return new JsonResponse($jsonCustomer, Response::HTTP_OK, [], true);
     }*/
-
-
 }

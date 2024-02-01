@@ -28,8 +28,6 @@ use OpenApi\Annotations as OA;
 
 class UsersController extends AbstractController
 {
-
-
     /** Cette méthode permet de récupérer l'ensemble des utilisateurs.
      *
      * @OA\Response(
@@ -64,11 +62,10 @@ class UsersController extends AbstractController
      * @Route("/api/users", name="users", methods="GET")
      */
     public function getUsersList(
-        UsersRepository     $usersRepository,
+        UsersRepository $usersRepository,
         SerializerInterface $serializer,
-        Request             $request
-    ): JsonResponse
-    {
+        Request $request
+    ): JsonResponse {
 
         /** @var Customers $customer */
         $customer = $this->getUser();
@@ -82,7 +79,6 @@ class UsersController extends AbstractController
         $context = SerializationContext::create()->setGroups(['getUsers']);
         $jsonUserList = $serializer->serialize($userList, 'json', $context);
         return new JsonResponse($jsonUserList, Response::HTTP_OK, [], true);
-
     }
 
 
@@ -119,8 +115,7 @@ class UsersController extends AbstractController
         /** @var Customers $customer */
         $customer = $this->getUser();
 
-        if($customer->getId() !== $users->getCustomer()->getId()){
-
+        if ($customer->getId() !== $users->getCustomer()->getId()) {
             return new JsonResponse("Vous n'êtes pas autorisé à voir cet utilisateur.", Response::HTTP_UNAUTHORIZED);
         }
 
@@ -173,7 +168,7 @@ class UsersController extends AbstractController
 
         $customer = $customersRepository->find($request->toArray()['idCustomer']);
 
-        if ($customer === null){
+        if ($customer === null) {
             return new JsonResponse("Le customer ne peut pas être vide", JsonResponse::HTTP_BAD_REQUEST, [], true);
         }
 
@@ -224,35 +219,34 @@ class UsersController extends AbstractController
         /** @var Customers $customer */
         $customer = $this->getUser();
 
-        if($customer->getId() !== $currentUser->getCustomer()->getId()){
-
+        if ($customer->getId() !== $currentUser->getCustomer()->getId()) {
             return new JsonResponse("Vous n'êtes pas autorisé à modifier cet utilisateur.", Response::HTTP_UNAUTHORIZED);
         }
 
         /** @var Users $updatedUser */
         $updatedUser = $serializer->deserialize($request->getContent(), Users::class, 'json');
 
-        if ($updatedUser->getZipcode() !== null){
+        if ($updatedUser->getZipcode() !== null) {
             $currentUser->setZipcode($updatedUser->getZipcode());
         }
 
-        if ($updatedUser->getCity() !== null){
+        if ($updatedUser->getCity() !== null) {
             $currentUser->setCity($updatedUser->getCity());
         }
 
-        if ($updatedUser->getAddress() !== null){
+        if ($updatedUser->getAddress() !== null) {
             $currentUser->setAddress($updatedUser->getAddress());
         }
 
-        if ($updatedUser->getEmail() !== null){
+        if ($updatedUser->getEmail() !== null) {
             $currentUser->setEmail($updatedUser->getEmail());
         }
 
-        if ($updatedUser->getLastname() !== null){
+        if ($updatedUser->getLastname() !== null) {
             $currentUser->setLastname($updatedUser->getLastname());
         }
 
-        if ($updatedUser->getFirstname() !== null){
+        if ($updatedUser->getFirstname() !== null) {
             $currentUser->setFirstname($updatedUser->getFirstname());
         }
 
@@ -293,8 +287,7 @@ class UsersController extends AbstractController
         /** @var Customers $customer */
         $customer = $this->getUser();
 
-        if($customer->getId() !== $users->getCustomer()->getId()){
-
+        if ($customer->getId() !== $users->getCustomer()->getId()) {
             return new JsonResponse("Vous n'êtes pas autorisé à supprimer cet utilisateur.", Response::HTTP_UNAUTHORIZED);
         }
 
@@ -303,6 +296,4 @@ class UsersController extends AbstractController
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
-
-
 }

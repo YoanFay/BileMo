@@ -11,7 +11,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UsersFixtures extends Fixture implements DependentFixtureInterface
 {
-
     private CustomersRepository $customersRepository;
 
 
@@ -22,7 +21,6 @@ class UsersFixtures extends Fixture implements DependentFixtureInterface
     {
 
         $this->customersRepository = $customersRepository;
-
     }
 
 
@@ -74,7 +72,6 @@ class UsersFixtures extends Fixture implements DependentFixtureInterface
         }
 
         $manager->flush();
-
     }
 
 
@@ -86,6 +83,4 @@ class UsersFixtures extends Fixture implements DependentFixtureInterface
 
         return [CustomersFixtures::class];
     }
-
-
 }
