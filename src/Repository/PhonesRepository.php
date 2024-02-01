@@ -16,8 +16,6 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PhonesRepository extends ServiceEntityRepository
 {
-
-
     /**
      * @param ManagerRegistry $registry parameter
      */
@@ -25,7 +23,6 @@ class PhonesRepository extends ServiceEntityRepository
     {
 
         parent::__construct($registry, Phones::class);
-
     }
 
 
@@ -43,7 +40,6 @@ class PhonesRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
-
     }
 
 
@@ -79,6 +75,4 @@ class PhonesRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-
 }

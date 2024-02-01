@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Customers;
 use App\Entity\Users;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,8 +20,6 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class UsersRepository extends ServiceEntityRepository
 {
-
-
     /**
      * @param ManagerRegistry $registry parameter
      */
@@ -28,7 +27,6 @@ class UsersRepository extends ServiceEntityRepository
     {
 
         parent::__construct($registry, Users::class);
-
     }
 
 
@@ -67,20 +65,21 @@ class UsersRepository extends ServiceEntityRepository
 
 
     /**
-     * @param int $page  parameter
-     * @param int $limit parameter
+     * @param int       $page     parameter
+     * @param int       $limit    parameter
+     * @param Customers $customer parameter
      *
      * @return float|int|mixed|string
      */
-    public function findAllWithPagination(int $page, int $limit): mixed
+    public function findAllWithPagination(int $page, int $limit, Customers $customer): mixed
     {
 
         return $this->createQueryBuilder('u')
+            ->andWhere('u.customer = :customer')
+            ->setParameter('customer', $customer)
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult();
     }
-
-
 }

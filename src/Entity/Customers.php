@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation\Groups;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use OpenApi\Annotations as OA;
@@ -19,18 +19,17 @@ use OpenApi\Annotations as OA;
  */
 class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("getCustomers", "getUsers")
+     * @Groups({"getCustomers", "getUsers"})
      */
     private int $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups("getCustomers", "getUsers")
+     * @Groups({"getCustomers", "getUsers"})
      * @Assert\NotBlank(message = "L'email est obligatoire")
      * @Assert\Email(message = "L'e-mail '{{ value }}' n'est pas un e-mail valide.")
      * @Assert\Length(
@@ -44,7 +43,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="json")
-     * @Groups("getCustomers", "getUsers")
+     * @Groups({"getCustomers", "getUsers"})
      * @Assert\NotBlank(message = "Les rôles sont obligatoires")
      * @OA\Property(type="array", @OA\Items(type="string"))
      * @var string[] $roles
@@ -54,14 +53,14 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Groups("getCustomers", "getUsers")
+     * @Groups({"getCustomers", "getUsers"})
      * @Assert\NotBlank(message = "Le mot de passe est obligatoires")
      */
     private string $password;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups("getCustomers", "getUsers")
+     * @Groups({"getCustomers", "getUsers"})
      * @Assert\NotBlank(message = "Le prénom est obligatoires")
      * @Assert\Length(
      *      min = 3,
@@ -74,7 +73,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups("getCustomers", "getUsers")
+     * @Groups({"getCustomers", "getUsers"})
      * @Assert\NotBlank(message = "Le nom est obligatoires")
      * @Assert\Length(
      *      min = 3,
@@ -87,10 +86,10 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Users::class, mappedBy="customer")
-     * @Groups("getCustomers")
+     * @Groups({"getCustomers"})
      * @var ArrayCollection<int, Users>
      */
-    private ArrayCollection $users;
+    private $users;
 
 
     /**
@@ -100,7 +99,6 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     {
 
         $this->users = new ArrayCollection();
-
     }
 
 
@@ -323,12 +321,7 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeUser(Users $user): self
     {
 
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getCustomer() === $this) {
-                $user->setCustomer(null);
-            }
-        }
+        $this->users->removeElement($user);
 
         return $this;
     }
@@ -342,6 +335,4 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this->getUserIdentifier();
     }
-
-
 }

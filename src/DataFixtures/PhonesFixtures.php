@@ -8,8 +8,6 @@ use Doctrine\Persistence\ObjectManager;
 
 class PhonesFixtures extends Fixture
 {
-
-
     /**
      * @param ObjectManager $manager parameter
      *
@@ -78,5 +76,4 @@ class PhonesFixtures extends Fixture
 
         $manager->flush();
     }
-
 }

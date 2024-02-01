@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\UsersRepository;
+use App\Repository\PhonesRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use OpenApi\Annotations\Property;
 
@@ -13,18 +13,17 @@ use OpenApi\Annotations\Property;
  */
 class Phones
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("getPhones")
+     * @Groups({"getPhones"})
      */
     private int $id;
 
     /**
      * @ORM\Column(type="string", length=90)
-     * @Groups("getPhones")
+     * @Groups({"getPhones"})
      * @Assert\Length(
      *      min = 2,
      *      max = 90,
@@ -40,7 +39,7 @@ class Phones
 
     /**
      * @ORM\Column(type="string", length=20)
-     * @Groups("getPhones")
+     * @Groups({"getPhones"})
      * @Assert\Length(
      *      min = 2,
      *      max = 20,
@@ -56,7 +55,7 @@ class Phones
 
     /**
      * @ORM\Column(type="string", length=25)
-     * @Groups("getPhones")
+     * @Groups({"getPhones"})
      * @Assert\Length(
      *      min = 2,
      *      max = 25,
@@ -72,7 +71,7 @@ class Phones
 
     /**
      * @ORM\Column(type="float")
-     * @Groups("getPhones")
+     * @Groups({"getPhones"})
      * @Assert\Type(
      *     type="double",
      *     message="La valeur {{ value }} n'est pas de type {{ type }}."
@@ -88,7 +87,6 @@ class Phones
     {
 
         return $this->id;
-
     }
 
 
@@ -200,6 +198,4 @@ class Phones
 
         return $this;
     }
-
-
 }

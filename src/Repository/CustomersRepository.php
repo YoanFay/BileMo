@@ -19,8 +19,6 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class CustomersRepository extends ServiceEntityRepository
 {
-
-
     /**
      * @param ManagerRegistry $registry parameter
      */
@@ -28,7 +26,6 @@ class CustomersRepository extends ServiceEntityRepository
     {
 
         parent::__construct($registry, Customers::class);
-
     }
 
 
@@ -46,7 +43,6 @@ class CustomersRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
-
     }
 
 
@@ -82,6 +78,4 @@ class CustomersRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
-
 }
