@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Customers;
 use App\Entity\Users;
 use App\Repository\CustomersRepository;
 use App\Repository\UsersRepository;
@@ -17,7 +18,9 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\SerializerInterface;
+use JMS\Serializer\Serializer;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -67,11 +70,17 @@ class UsersController extends AbstractController
     ): JsonResponse
     {
 
+        /** @var Customers $customer */
+        $customer = $this->getUser();
+
+        /** @var int $page */
         $page = $request->get('page', 1);
+        /** @var int $limit */
         $limit = $request->get('limit', 20);
 
-        $userList = $usersRepository->findAllWithPagination($page, $limit);
-        $jsonUserList = $serializer->serialize($userList, 'json', ["groups" => "getUsers"]);
+        $userList = $usersRepository->findAllWithPagination($page, $limit, $customer);
+        $context = SerializationContext::create()->setGroups(['getUsers']);
+        $jsonUserList = $serializer->serialize($userList, 'json', $context);
         return new JsonResponse($jsonUserList, Response::HTTP_OK, [], true);
 
     }
@@ -107,7 +116,16 @@ class UsersController extends AbstractController
     public function getDetailUser(Users $users, SerializerInterface $serializer): JsonResponse
     {
 
-        $jsonUser = $serializer->serialize($users, 'json', ["groups" => "getUsers"]);
+        /** @var Customers $customer */
+        $customer = $this->getUser();
+
+        if($customer->getId() !== $users->getCustomer()->getId()){
+
+            return new JsonResponse("Vous n'êtes pas autorisé à voir cet utilisateur.", Response::HTTP_UNAUTHORIZED);
+        }
+
+        $context = SerializationContext::create()->setGroups(['getUsers']);
+        $jsonUser = $serializer->serialize($users, 'json', $context);
         return new JsonResponse($jsonUser, Response::HTTP_OK, [], true);
     }
 
@@ -144,7 +162,7 @@ class UsersController extends AbstractController
      */
     public function createUsers(Request $request, SerializerInterface $serializer, EntityManagerInterface $manager, UrlGeneratorInterface $urlGenerator, ValidatorInterface $validator, CustomersRepository $customersRepository): JsonResponse
     {
-
+        /** @var Users $user */
         $user = $serializer->deserialize($request->getContent(), Users::class, 'json');
 
         $errors = $validator->validate($user);
@@ -153,12 +171,19 @@ class UsersController extends AbstractController
             return new JsonResponse($serializer->serialize($errors, 'json'), JsonResponse::HTTP_BAD_REQUEST, [], true);
         }
 
-        $user->setCustomer($customersRepository->find($request->toArray()['idCustomer']));
+        $customer = $customersRepository->find($request->toArray()['idCustomer']);
+
+        if ($customer === null){
+            return new JsonResponse("Le customer ne peut pas être vide", JsonResponse::HTTP_BAD_REQUEST, [], true);
+        }
+
+        $user->setCustomer($customer);
 
         $manager->persist($user);
         $manager->flush();
 
-        $jsonUser = $serializer->serialize($user, 'json', ["groups" => "getUsers"]);
+        $context = SerializationContext::create()->setGroups(['getUsers']);
+        $jsonUser = $serializer->serialize($user, 'json', $context);
         $location = $urlGenerator->generate('detailUser', ['id' => $user->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
 
         return new JsonResponse($jsonUser, Response::HTTP_CREATED, ["Location" => $location], true);
@@ -196,15 +221,44 @@ class UsersController extends AbstractController
     public function updateUser(Request $request, SerializerInterface $serializer, Users $currentUser, EntityManagerInterface $manager): JsonResponse
     {
 
-        $updatedUser = $serializer->deserialize(
-            $request->getContent(),
-            Users::class,
-            'json',
-            [AbstractNormalizer::OBJECT_TO_POPULATE => $currentUser]
-        );
+        /** @var Customers $customer */
+        $customer = $this->getUser();
 
-        $manager->persist($updatedUser);
+        if($customer->getId() !== $currentUser->getCustomer()->getId()){
+
+            return new JsonResponse("Vous n'êtes pas autorisé à modifier cet utilisateur.", Response::HTTP_UNAUTHORIZED);
+        }
+
+        /** @var Users $updatedUser */
+        $updatedUser = $serializer->deserialize($request->getContent(), Users::class, 'json');
+
+        if ($updatedUser->getZipcode() !== null){
+            $currentUser->setZipcode($updatedUser->getZipcode());
+        }
+
+        if ($updatedUser->getCity() !== null){
+            $currentUser->setCity($updatedUser->getCity());
+        }
+
+        if ($updatedUser->getAddress() !== null){
+            $currentUser->setAddress($updatedUser->getAddress());
+        }
+
+        if ($updatedUser->getEmail() !== null){
+            $currentUser->setEmail($updatedUser->getEmail());
+        }
+
+        if ($updatedUser->getLastname() !== null){
+            $currentUser->setLastname($updatedUser->getLastname());
+        }
+
+        if ($updatedUser->getFirstname() !== null){
+            $currentUser->setFirstname($updatedUser->getFirstname());
+        }
+
+        $manager->persist($currentUser);
         $manager->flush();
+
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
@@ -235,6 +289,14 @@ class UsersController extends AbstractController
      */
     public function deleteUser(Users $users, EntityManagerInterface $manager): JsonResponse
     {
+
+        /** @var Customers $customer */
+        $customer = $this->getUser();
+
+        if($customer->getId() !== $users->getCustomer()->getId()){
+
+            return new JsonResponse("Vous n'êtes pas autorisé à supprimer cet utilisateur.", Response::HTTP_UNAUTHORIZED);
+        }
 
         $manager->remove($users);
         $manager->flush();

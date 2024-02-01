@@ -4,12 +4,43 @@ namespace App\Entity;
 
 use App\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use OpenApi\Annotations\Property;
+use JMS\Serializer\Annotation as Serializer;
+use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
+ *
+ * @Hateoas\Relation(
+ *      "self",
+ *      href = @Hateoas\Route(
+ *          "detailUser",
+ *          parameters = { "id" = "expr(object.getId())" },
+ *          absolute = true
+ *      ),
+ *      exclusion = @Hateoas\Exclusion(groups="getUsers")
+ * )
+ *
+ * @Hateoas\Relation(
+ *      "delete",
+ *      href = @Hateoas\Route(
+ *          "deleteUsers",
+ *          parameters = { "id" = "expr(object.getId())" },
+ *      ),
+ *      exclusion = @Hateoas\Exclusion(groups="getUsers"),
+ * )
+ *
+ * @Hateoas\Relation(
+ *      "update",
+ *      href = @Hateoas\Route(
+ *          "updateUser",
+ *          parameters = { "id" = "expr(object.getId())" },
+ *      ),
+ *      exclusion = @Hateoas\Exclusion(groups="getUsers"),
+ * )
+ *
  */
 class Users
 {
@@ -18,14 +49,14 @@ class Users
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @Groups("getUsers", "getCustomers")
+     * @Groups({"getUsers", "getCustomers"})
      * @var int
      */
     private int $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups("getUsers", "getCustomers")
+     * @Groups({"getUsers", "getCustomers"})
      * @Assert\NotBlank(message = "Le prénom est obligatoires")
      * @Assert\Length(
      *      min = 3,
@@ -34,12 +65,13 @@ class Users
      *      maxMessage = "Votre prénom ne peut pas contenir plus de {{ limit }} caractères."
      * )
      * @Property(description="Prénom de l'utilisateur")
+     * @Serializer\Expose
      */
-    private string $firstname;
+    private ?string $firstname = null;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups("getUsers", "getCustomers")
+     * @Groups({"getUsers", "getCustomers"})
      * @Assert\NotBlank(message = "Le nom est obligatoires")
      * @Assert\Length(
      *      min = 3,
@@ -49,11 +81,11 @@ class Users
      * )
      * @Property(description="Nom de l'utilisateur")
      */
-    private string $lastname;
+    private ?string $lastname = null;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Groups("getUsers", "getCustomers")
+     * @Groups({"getUsers", "getCustomers"})
      * @Assert\NotBlank(message = "L'email est obligatoire")
      * @Assert\Email(message = "L'e-mail '{{ value }}' n'est pas un e-mail valide.")
      * @Assert\Length(
@@ -64,11 +96,11 @@ class Users
      * )
      * @Property(description="Email de l'utilisateur")
      */
-    private string $email;
+    private ?string $email = null;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Groups("getUsers", "getCustomers")
+     * @Groups({"getUsers", "getCustomers"})
      * @Assert\NotBlank(message = "L'adresse est obligatoire")
      * @Assert\Length(
      *      min = 6,
@@ -78,11 +110,11 @@ class Users
      * )
      * @Property(description="Adresse de l'utilisateur")
      */
-    private string $address;
+    private ?string $address = null;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups("getUsers", "getCustomers")
+     * @Groups({"getUsers", "getCustomers"})
      * @Assert\NotBlank(message = "La ville est obligatoire")
      * @Assert\Length(
      *      min = 6,
@@ -92,20 +124,20 @@ class Users
      * )
      * @Property(description="Ville de l'utilisateur")
      */
-    private string $city;
+    private ?string $city = null;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups("getUsers", "getCustomers")
+     * @Groups({"getUsers", "getCustomers"})
      * @Assert\NotBlank(message = "Le code postal est obligatoire")
      * @Property(description="Code postal de l'utilisateur")
      */
-    private int $zipcode;
+    private ?int $zipcode = null;
 
     /**
      * @ORM\ManyToOne(targetEntity=Customers::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("getUsers")
+     * @Groups({"getUsers"})
      * @Property(description="Client lié à l'utilisateur")
      */
     private Customers $customer;
@@ -281,9 +313,9 @@ class Users
 
 
     /**
-     * @return Customers|null
+     * @return Customers
      */
-    public function getCustomer(): ?Customers
+    public function getCustomer(): Customers
     {
 
         return $this->customer;
@@ -291,11 +323,11 @@ class Users
 
 
     /**
-     * @param Customers|null $customer parameter
+     * @param Customers $customer parameter
      *
      * @return $this
      */
-    public function setCustomer(?Customers $customer): self
+    public function setCustomer(Customers $customer): self
     {
 
         $this->customer = $customer;

@@ -12,7 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\SerializerInterface;
+use JMS\Serializer\Serializer;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -62,11 +64,16 @@ class PhonesController extends AbstractController
     ): JsonResponse
     {
 
+        /** @var int $page */
         $page = $request->get('page', 1);
+        /** @var int $limit */
         $limit = $request->get('limit', 20);
 
         $phoneList = $phonesRepository->findAllWithPagination($page, $limit);
-        $jsonPhoneList = $serializer->serialize($phoneList, 'json', ["groups" => "getPhones"]);
+        //$jsonPhoneList = $serializer->serialize($phoneList, 'json', ["groups" => "getPhones"]);
+
+        $context = SerializationContext::create()->setGroups(['getPhones']);
+        $jsonPhoneList = $serializer->serialize($phoneList, 'json', $context);
         return new JsonResponse($jsonPhoneList, Response::HTTP_OK, [], true);
 
     }
@@ -102,7 +109,8 @@ class PhonesController extends AbstractController
     public function getDetailPhone(Phones $phones, SerializerInterface $serializer): JsonResponse
     {
 
-        $jsonPhone = $serializer->serialize($phones, 'json', ["groups" => "getPhones"]);
+        $context = SerializationContext::create()->setGroups(['getPhones']);
+        $jsonPhone = $serializer->serialize($phones, 'json', $context);
         return new JsonResponse($jsonPhone, Response::HTTP_OK, [], true);
     }
 

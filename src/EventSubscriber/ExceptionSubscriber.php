@@ -30,7 +30,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
     public function onKernelException(ExceptionEvent $event): void
     {
 
-        $exception = $event->getThrowable();
+        /*$exception = $event->getThrowable();
         $data = [
             'status' => 500,
             'message' => $exception->getMessage()
@@ -43,7 +43,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
             ];
         }
 
-        $event->setResponse(new JsonResponse($data));
+        $event->setResponse(new JsonResponse($data));*/
 
     }
 
