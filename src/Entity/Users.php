@@ -28,6 +28,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
  *      href = @Hateoas\Route(
  *          "deleteUsers",
  *          parameters = { "id" = "expr(object.getId())" },
+ *          absolute = true
  *      ),
  *      exclusion = @Hateoas\Exclusion(groups="getUsers"),
  * )
@@ -37,6 +38,7 @@ use Hateoas\Configuration\Annotation as Hateoas;
  *      href = @Hateoas\Route(
  *          "updateUser",
  *          parameters = { "id" = "expr(object.getId())" },
+ *          absolute = true
  *      ),
  *      exclusion = @Hateoas\Exclusion(groups="getUsers"),
  * )

@@ -149,13 +149,12 @@ class UsersController extends AbstractController
      * @param EntityManagerInterface $manager             parameter
      * @param UrlGeneratorInterface  $urlGenerator        parameter
      * @param ValidatorInterface     $validator           parameter
-     * @param CustomersRepository    $customersRepository parameter
      *
      * @return JsonResponse
      *
      * @Route("/api/users", name="createUser", methods="POST")
      */
-    public function createUsers(Request $request, SerializerInterface $serializer, EntityManagerInterface $manager, UrlGeneratorInterface $urlGenerator, ValidatorInterface $validator, CustomersRepository $customersRepository): JsonResponse
+    public function createUsers(Request $request, SerializerInterface $serializer, EntityManagerInterface $manager, UrlGeneratorInterface $urlGenerator, ValidatorInterface $validator): JsonResponse
     {
         /** @var Users $user */
         $user = $serializer->deserialize($request->getContent(), Users::class, 'json');
@@ -166,11 +165,8 @@ class UsersController extends AbstractController
             return new JsonResponse($serializer->serialize($errors, 'json'), JsonResponse::HTTP_BAD_REQUEST, [], true);
         }
 
-        $customer = $customersRepository->find($request->toArray()['idCustomer']);
-
-        if ($customer === null) {
-            return new JsonResponse("Le customer ne peut pas être vide", JsonResponse::HTTP_BAD_REQUEST, [], true);
-        }
+        /** @var Customers $customer */
+        $customer = $this->getUser();
 
         $user->setCustomer($customer);
 
@@ -208,12 +204,13 @@ class UsersController extends AbstractController
      * @param SerializerInterface    $serializer  parameter
      * @param Users                  $currentUser parameter
      * @param EntityManagerInterface $manager     parameter
+     * @param UrlGeneratorInterface  $urlGenerator parameter
      *
      * @return JsonResponse
      *
      * @Route("/api/users/{id}", name="updateUser", methods="PUT")
      */
-    public function updateUser(Request $request, SerializerInterface $serializer, Users $currentUser, EntityManagerInterface $manager): JsonResponse
+    public function updateUser(Request $request, SerializerInterface $serializer, Users $currentUser, EntityManagerInterface $manager, UrlGeneratorInterface $urlGenerator): JsonResponse
     {
 
         /** @var Customers $customer */
@@ -253,7 +250,11 @@ class UsersController extends AbstractController
         $manager->persist($currentUser);
         $manager->flush();
 
-        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+        $context = SerializationContext::create()->setGroups(['getUsers']);
+        $jsonUser = $serializer->serialize($currentUser, 'json', $context);
+        $location = $urlGenerator->generate('detailUser', ['id' => $currentUser->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        return new JsonResponse($jsonUser, Response::HTTP_CREATED, ["Location" => $location], true);
     }
 
 
@@ -294,6 +295,6 @@ class UsersController extends AbstractController
         $manager->remove($users);
         $manager->flush();
 
-        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+        return new JsonResponse(true, Response::HTTP_OK);
     }
 }

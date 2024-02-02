@@ -43,7 +43,6 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="json")
-     * @Groups({"getCustomers", "getUsers"})
      * @Assert\NotBlank(message = "Les rôles sont obligatoires")
      * @OA\Property(type="array", @OA\Items(type="string"))
      * @var string[] $roles
@@ -53,7 +52,6 @@ class Customers implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Groups({"getCustomers", "getUsers"})
      * @Assert\NotBlank(message = "Le mot de passe est obligatoires")
      */
     private string $password;
