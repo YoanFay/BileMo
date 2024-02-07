@@ -2,7 +2,7 @@
 
 ## Projet par Yoan Fayolle
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/5b110127aa1b462986b546ac94a36c57)](https://app.codacy.com/gh/YoanFay/SnowTricks/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/498cea624ef84da699fdf2785fbbd53d)](https://app.codacy.com/gh/YoanFay/BileMo/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 -----------------
 
